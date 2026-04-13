@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Elijah</title>
+<title>Elijah Agbottah — Web & Software Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,700;0,800;1,300&display=swap" rel="stylesheet">
@@ -12,39 +12,113 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 :root{
-  --bg:         #f0f6ff;
-  --bg2:        #e4efff;
-  --bg3:        #d4e5ff;
-  --white:      #ffffff;
-  --ink:        #0a1628;
-  --ink2:       #1e3a5f;
-  --muted:      #5a7a9a;
-  --blue:       #1d6fe8;
-  --blue2:      #3b8ef5;
-  --navy:       #0f3d8c;
-  --sky:        #60a5fa;
-  --border:     rgba(29,111,232,0.12);
-  --border2:    rgba(29,111,232,0.22);
-  --glass:      rgba(255,255,255,0.65);
-  --glass2:     rgba(255,255,255,0.88);
-  --shadow:     0 8px 40px rgba(15,61,140,0.10);
-  --shadow2:    0 20px 60px rgba(15,61,140,0.16);
+  --bg:#f0f6ff;--bg2:#e4efff;--bg3:#d4e5ff;
+  --white:#ffffff;--ink:#0a1628;--ink2:#1e3a5f;--muted:#5a7a9a;
+  --blue:#1d6fe8;--blue2:#3b8ef5;--navy:#0f3d8c;--sky:#60a5fa;
+  --border:rgba(29,111,232,0.12);--border2:rgba(29,111,232,0.22);
+  --glass:rgba(255,255,255,0.65);--glass2:rgba(255,255,255,0.88);
+  --shadow:0 8px 40px rgba(15,61,140,0.10);--shadow2:0 20px 60px rgba(15,61,140,0.16);
 }
 
 html,body{height:100%}
 body{
-  background:var(--bg);
-  color:var(--ink);
+  background:var(--bg);color:var(--ink);
   font-family:'Plus Jakarta Sans',sans-serif;
   overflow-x:hidden;
 }
-
 body::before{
   content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
     radial-gradient(ellipse 80% 60% at 10% 10%,rgba(59,142,245,.10),transparent),
     radial-gradient(ellipse 60% 50% at 90% 80%,rgba(15,61,140,.08),transparent),
     radial-gradient(ellipse 50% 60% at 50% 50%,rgba(96,165,250,.06),transparent);
+}
+
+/* ══════════════════════════════════════
+   TRANSITION ANIMATIONS
+══════════════════════════════════════ */
+
+/* 1. TOP PROGRESS BAR — sweeps across the top */
+#progress-bar{
+  position:fixed;top:0;left:0;height:3px;width:0%;
+  background:linear-gradient(90deg,var(--blue),var(--sky),var(--blue2));
+  z-index:9999;border-radius:0 3px 3px 0;
+  box-shadow:0 0 12px rgba(29,111,232,.7);
+  transition:none;
+  pointer-events:none;
+}
+#progress-bar.running{
+  transition:width .35s cubic-bezier(.4,0,.2,1);
+  width:100%;
+}
+#progress-bar.done{
+  transition:opacity .3s ease .1s;
+  opacity:0;width:100%;
+}
+
+/* 2. PAGE NAME TOAST — pops up in center briefly */
+#page-toast{
+  position:fixed;top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(0.8);
+  z-index:9998;
+  background:linear-gradient(135deg,var(--blue),var(--navy));
+  color:#fff;
+  padding:16px 36px;
+  border-radius:100px;
+  font-size:15px;font-weight:700;letter-spacing:.04em;
+  box-shadow:0 20px 60px rgba(29,111,232,.45);
+  opacity:0;
+  pointer-events:none;
+  transition:none;
+  display:flex;align-items:center;gap:10px;
+  white-space:nowrap;
+}
+#page-toast.show{
+  animation:toastPop .55s cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes toastPop{
+  0%  {opacity:0;transform:translate(-50%,-50%) scale(.7)}
+  35% {opacity:1;transform:translate(-50%,-50%) scale(1.05)}
+  55% {opacity:1;transform:translate(-50%,-50%) scale(1)}
+  80% {opacity:1;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(.85)}
+}
+
+/* 3. PAGE CONTENT ANIMATIONS */
+.page{
+  display:none;min-height:100vh;
+  padding-top:74px;
+  position:relative;z-index:1;
+}
+.page.active{display:block}
+
+/* slide in from right */
+.page.anim-right{animation:slideFromRight .4s cubic-bezier(.16,1,.3,1)}
+/* slide in from left */
+.page.anim-left{animation:slideFromLeft .4s cubic-bezier(.16,1,.3,1)}
+
+@keyframes slideFromRight{
+  from{opacity:0;transform:translateX(48px)}
+  to{opacity:1;transform:none}
+}
+@keyframes slideFromLeft{
+  from{opacity:0;transform:translateX(-48px)}
+  to{opacity:1;transform:none}
+}
+
+/* 4. NAV RIPPLE on click */
+.nav-pills a{position:relative;overflow:hidden}
+.ripple{
+  position:absolute;border-radius:50%;
+  width:60px;height:60px;
+  background:rgba(255,255,255,.35);
+  transform:scale(0);
+  animation:ripple .5s linear;
+  pointer-events:none;
+  margin-top:-30px;margin-left:-30px;
+}
+@keyframes ripple{
+  to{transform:scale(4);opacity:0}
 }
 
 /* ══════════════════════════════════════
@@ -64,6 +138,7 @@ nav{
   font-size:17px;font-weight:800;letter-spacing:-.02em;
   color:var(--ink);text-decoration:none;
   display:flex;align-items:center;gap:9px;flex-shrink:0;
+  cursor:pointer;
 }
 .logo-badge{
   width:32px;height:32px;border-radius:9px;
@@ -73,13 +148,11 @@ nav{
   box-shadow:0 4px 12px rgba(29,111,232,.35);flex-shrink:0;
 }
 
-/* ── PILL NAV ── */
 .nav-pills{
   display:flex;align-items:center;
   background:rgba(255,255,255,.8);
   border:1.5px solid var(--border2);
-  border-radius:100px;
-  padding:5px;gap:2px;
+  border-radius:100px;padding:5px;gap:2px;
   backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
   box-shadow:0 2px 12px rgba(15,61,140,.07);
 }
@@ -91,14 +164,14 @@ nav{
   white-space:nowrap;cursor:pointer;
   display:flex;align-items:center;gap:7px;
 }
-.nav-pills a .nav-icon{font-size:13px}
+.nav-pills a .nav-icon{font-size:13px;transition:transform .3s ease}
 .nav-pills a:hover{color:var(--ink2);background:rgba(29,111,232,.06)}
+.nav-pills a:hover .nav-icon{transform:scale(1.25)}
 .nav-pills a.active{
   background:linear-gradient(135deg,var(--blue),var(--navy));
   color:#fff !important;
   box-shadow:0 3px 12px rgba(29,111,232,.32);
 }
-.nav-pills a.active .nav-icon{filter:brightness(10)}
 
 .nav-cta{
   font-size:13px;font-weight:700;letter-spacing:.02em;
@@ -118,24 +191,19 @@ nav{
   cursor:pointer;transition:background .2s;flex-shrink:0;
 }
 .hamburger:hover{background:#fff}
-.hamburger span{
-  display:block;width:18px;height:2px;background:var(--ink);border-radius:2px;
-  transition:transform .3s ease,opacity .3s ease;
-}
+.hamburger span{display:block;width:18px;height:2px;background:var(--ink);border-radius:2px;transition:transform .3s ease,opacity .3s ease}
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .hamburger.open span:nth-child(2){opacity:0}
 .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 
 /* Mobile drawer */
 .mobile-menu{
-  display:none;
-  position:fixed;top:70px;left:0;right:0;z-index:199;
+  display:none;position:fixed;top:70px;left:0;right:0;z-index:199;
   background:rgba(240,246,255,.97);
   backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   border-bottom:1px solid var(--border2);
   box-shadow:0 8px 32px rgba(15,61,140,.12);
-  padding:16px 20px 24px;
-  flex-direction:column;gap:4px;
+  padding:16px 20px 24px;flex-direction:column;gap:4px;
   transform:translateY(-10px);opacity:0;
   transition:transform .3s cubic-bezier(.16,1,.3,1),opacity .3s ease;
   pointer-events:none;
@@ -148,45 +216,18 @@ nav{
   transition:background .2s,color .2s,border-color .2s;cursor:pointer;
 }
 .mobile-menu a:hover{background:var(--bg2);color:var(--ink)}
-.mobile-menu a.active{
-  background:linear-gradient(135deg,rgba(29,111,232,.1),rgba(15,61,140,.08));
-  border-color:rgba(29,111,232,.25);color:var(--blue);
-}
+.mobile-menu a.active{background:linear-gradient(135deg,rgba(29,111,232,.1),rgba(15,61,140,.08));border-color:rgba(29,111,232,.25);color:var(--blue)}
 .mobile-menu a .m-icon{font-size:16px}
 .mobile-menu .m-divider{height:1px;background:var(--border2);margin:6px 0}
-.mobile-menu .m-cta{
-  background:linear-gradient(135deg,var(--blue),var(--navy));
-  color:#fff;border-color:transparent;
-  box-shadow:0 4px 16px rgba(29,111,232,.3);
-  justify-content:center;
-}
+.mobile-menu .m-cta{background:linear-gradient(135deg,var(--blue),var(--navy));color:#fff;border-color:transparent;box-shadow:0 4px 16px rgba(29,111,232,.3);justify-content:center}
 .mobile-menu .m-cta:hover{opacity:.9}
 
 /* ══════════════════════════════════════
-   PAGE SYSTEM — only active page shows
-══════════════════════════════════════ */
-.page{
-  display:none;
-  min-height:100vh;
-  padding-top:74px; /* nav height */
-  position:relative;z-index:1;
-  animation:pageIn .35s cubic-bezier(.16,1,.3,1);
-}
-.page.active{display:block}
-
-@keyframes pageIn{
-  from{opacity:0;transform:translateY(14px)}
-  to{opacity:1;transform:none}
-}
-
-/* ══════════════════════════════════════
-   HOME / HERO PAGE
+   HOME PAGE
 ══════════════════════════════════════ */
 #page-home{
-  display:flex;flex-direction:column;
-  justify-content:center;
-  min-height:100vh;
-  padding:100px 60px 60px;
+  display:flex;flex-direction:column;justify-content:center;
+  min-height:100vh;padding:100px 60px 60px;
 }
 .hero-pill{
   display:inline-flex;align-items:center;gap:9px;
@@ -197,153 +238,70 @@ nav{
   color:var(--navy);margin-bottom:36px;
   box-shadow:0 2px 12px rgba(15,61,140,.08);
 }
-.pill-live{
-  width:7px;height:7px;border-radius:50%;
-  background:#22c55e;box-shadow:0 0 8px rgba(34,197,94,.6);
-  animation:livep 2s ease infinite;
-}
+.pill-live{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px rgba(34,197,94,.6);animation:livep 2s ease infinite}
 @keyframes livep{0%,100%{opacity:1}50%{opacity:.4}}
 
 .hero-grid{display:grid;grid-template-columns:1fr 400px;gap:56px;align-items:center}
-.hero-h1{
-  font-size:clamp(52px,8vw,108px);
-  font-weight:800;line-height:.93;letter-spacing:-.04em;
-}
-.hero-h1 em{
-  font-style:normal;
-  background:linear-gradient(135deg,var(--blue),var(--navy));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.hero-sub{
-  font-size:16px;font-weight:300;line-height:1.85;color:var(--muted);
-  margin-top:24px;max-width:480px;
-}
+.hero-h1{font-size:clamp(52px,8vw,108px);font-weight:800;line-height:.93;letter-spacing:-.04em}
+.hero-h1 em{font-style:normal;background:linear-gradient(135deg,var(--blue),var(--navy));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:16px;font-weight:300;line-height:1.85;color:var(--muted);margin-top:24px;max-width:480px}
 .hero-sub strong{color:var(--ink2);font-weight:600}
 .hero-actions{display:flex;gap:12px;margin-top:40px;flex-wrap:wrap}
 
-.btn-fill{
-  display:inline-flex;align-items:center;gap:9px;
-  background:linear-gradient(135deg,var(--blue),var(--navy));
-  color:#fff;padding:14px 30px;border-radius:100px;
-  font-size:13px;font-weight:700;text-decoration:none;
-  box-shadow:0 6px 22px rgba(29,111,232,.3);
-  transition:transform .22s,box-shadow .22s;cursor:pointer;border:none;
-}
+.btn-fill{display:inline-flex;align-items:center;gap:9px;background:linear-gradient(135deg,var(--blue),var(--navy));color:#fff;padding:14px 30px;border-radius:100px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 6px 22px rgba(29,111,232,.3);transition:transform .22s,box-shadow .22s;cursor:pointer;border:none}
 .btn-fill:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(29,111,232,.45)}
-
-.btn-outline{
-  display:inline-flex;align-items:center;gap:9px;
-  background:var(--glass2);color:var(--ink);
-  padding:14px 30px;border-radius:100px;
-  font-size:13px;font-weight:600;text-decoration:none;
-  border:1.5px solid var(--border2);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  box-shadow:var(--shadow);transition:transform .22s,border-color .22s;cursor:pointer;
-}
+.btn-outline{display:inline-flex;align-items:center;gap:9px;background:var(--glass2);color:var(--ink);padding:14px 30px;border-radius:100px;font-size:13px;font-weight:600;text-decoration:none;border:1.5px solid var(--border2);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:var(--shadow);transition:transform .22s,border-color .22s;cursor:pointer}
 .btn-outline:hover{transform:translateY(-2px);border-color:var(--blue)}
 
-/* Hero card */
-.hero-card{
-  background:var(--glass2);border:1.5px solid var(--border2);border-radius:24px;
-  backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);
-  padding:32px;box-shadow:var(--shadow2);position:relative;overflow:hidden;
-}
-.hero-card::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at top right,rgba(59,142,245,.12),transparent 60%);
-  pointer-events:none;
-}
+.hero-card{background:var(--glass2);border:1.5px solid var(--border2);border-radius:24px;backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);padding:32px;box-shadow:var(--shadow2);position:relative;overflow:hidden}
+.hero-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top right,rgba(59,142,245,.12),transparent 60%);pointer-events:none}
 .hcard-lbl{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:18px}
 .hstats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border2);border-radius:16px;overflow:hidden;margin-bottom:20px}
 .hstat{background:rgba(255,255,255,.8);padding:18px 16px;transition:background .25s}
 .hstat:hover{background:#fff}
-.hstat-n{
-  font-size:32px;font-weight:800;letter-spacing:-.04em;line-height:1;
-  background:linear-gradient(135deg,var(--blue),var(--navy));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:3px;
-}
+.hstat-n{font-size:32px;font-weight:800;letter-spacing:-.04em;line-height:1;background:linear-gradient(135deg,var(--blue),var(--navy));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:3px}
 .hstat-l{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .hdivider{height:1px;background:var(--border2);margin-bottom:18px}
 .hchip-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
 .hchips{display:flex;flex-wrap:wrap;gap:6px}
-.hchip{
-  font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
-  padding:5px 12px;border-radius:100px;
-  background:rgba(29,111,232,.08);border:1.5px solid rgba(29,111,232,.2);color:var(--navy);
-  transition:background .2s,border-color .2s;
-}
+.hchip{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:5px 12px;border-radius:100px;background:rgba(29,111,232,.08);border:1.5px solid rgba(29,111,232,.2);color:var(--navy);transition:background .2s,border-color .2s}
 .hchip:hover{background:rgba(29,111,232,.16);border-color:var(--blue)}
 
 /* ══════════════════════════════════════
-   PAGE CONTENT WRAPPER
+   PAGE CONTENT
 ══════════════════════════════════════ */
-.page-content{padding:60px 60px 80px}
-.page-header{margin-bottom:56px}
+.page-content{padding:56px 60px 80px}
+.page-header{margin-bottom:52px}
 .stag{font-size:10px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
 .stitle{font-size:clamp(34px,4.5vw,56px);font-weight:800;line-height:1.05;letter-spacing:-.03em;color:var(--ink)}
 .stitle em{font-style:normal;background:linear-gradient(135deg,var(--blue),var(--navy));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
-/* ══════════════════════════════════════
-   ABOUT PAGE
-══════════════════════════════════════ */
+/* ABOUT */
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
 .about-left{display:flex;flex-direction:column;gap:28px}
-
-.photo-wrap{
-  position:relative;width:100%;border-radius:24px;overflow:hidden;
-  box-shadow:var(--shadow2);border:2px solid var(--border2);background:var(--bg3);
-}
-.photo-wrap::before{
-  content:'';position:absolute;top:-40px;left:-40px;
-  width:180px;height:180px;border-radius:50%;
-  background:radial-gradient(circle,rgba(59,142,245,.20),transparent);
-  pointer-events:none;z-index:1;
-}
-.elijah{
-  width:100%;height:480px;object-fit:cover;object-position:center top;
-  display:block;transition:transform .5s ease;
-}
+.photo-wrap{position:relative;width:100%;border-radius:24px;overflow:hidden;box-shadow:var(--shadow2);border:2px solid var(--border2);background:var(--bg3)}
+.photo-wrap::before{content:'';position:absolute;top:-40px;left:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(59,142,245,.20),transparent);pointer-events:none;z-index:1}
+.elijah{width:100%;height:380px;object-fit:cover;object-position:center top;display:block;transition:transform .5s ease}
 .photo-wrap:hover .elijah{transform:scale(1.03)}
-.photo-tag{
-  position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
-  background:rgba(255,255,255,.92);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  border:1.5px solid var(--border2);border-radius:100px;
-  padding:8px 20px;display:flex;align-items:center;gap:10px;
-  box-shadow:0 4px 20px rgba(15,61,140,.15);white-space:nowrap;z-index:2;
-}
+.photo-tag{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1.5px solid var(--border2);border-radius:100px;padding:8px 20px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(15,61,140,.15);white-space:nowrap;z-index:2}
 .photo-tag-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px rgba(34,197,94,.6);animation:livep 2s ease infinite;flex-shrink:0}
 .photo-tag-name{font-size:12px;font-weight:700;color:var(--ink);letter-spacing:.02em}
 .photo-tag-role{font-size:10px;color:var(--muted);font-weight:500}
 .photo-tag-divider{width:1px;height:22px;background:var(--border2)}
-
 .about-text{font-size:15px;font-weight:300;line-height:1.9;color:var(--muted)}
 .about-text strong{color:var(--ink2);font-weight:600}
 
 .sk-cards{display:flex;flex-direction:column;gap:10px}
-.sk-card{
-  background:var(--glass2);border:1.5px solid var(--border2);border-radius:14px;padding:18px 20px;
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  display:flex;align-items:center;gap:16px;
-  box-shadow:0 2px 12px rgba(15,61,140,.06);
-  transition:transform .25s,box-shadow .25s,border-color .25s;
-}
+.sk-card{background:var(--glass2);border:1.5px solid var(--border2);border-radius:14px;padding:18px 20px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;align-items:center;gap:16px;box-shadow:0 2px 12px rgba(15,61,140,.06);transition:transform .25s,box-shadow .25s,border-color .25s}
 .sk-card:hover{transform:translateX(6px);box-shadow:var(--shadow);border-color:rgba(29,111,232,.3)}
 .sk-ico{width:40px;height:40px;border-radius:11px;background:rgba(29,111,232,.1);border:1.5px solid rgba(29,111,232,.18);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
 .sk-name{font-size:13px;font-weight:700;margin-bottom:4px;color:var(--ink)}
 .sk-tags{display:flex;flex-wrap:wrap;gap:4px}
 .sk-tag{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:100px;background:var(--bg3);color:var(--muted);border:1px solid var(--border2)}
 
-/* ══════════════════════════════════════
-   SERVICES PAGE
-══════════════════════════════════════ */
+/* SERVICES */
 .srv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.srv{
-  background:var(--glass2);border:1.5px solid var(--border2);border-radius:20px;padding:30px 26px;
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  box-shadow:0 4px 20px rgba(15,61,140,.07);
-  transition:transform .28s,box-shadow .28s,border-color .28s;
-}
+.srv{background:var(--glass2);border:1.5px solid var(--border2);border-radius:20px;padding:30px 26px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 4px 20px rgba(15,61,140,.07);transition:transform .28s,box-shadow .28s,border-color .28s}
 .srv:hover{transform:translateY(-6px);box-shadow:var(--shadow2);border-color:rgba(29,111,232,.35)}
 .srv-ico{width:50px;height:50px;border-radius:14px;background:rgba(29,111,232,.1);border:1.5px solid rgba(29,111,232,.2);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:18px}
 .srv-name{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--ink)}
@@ -351,15 +309,9 @@ nav{
 .srv-chips{display:flex;flex-wrap:wrap;gap:5px}
 .srv-chip{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:100px;background:rgba(29,111,232,.08);border:1px solid rgba(29,111,232,.15);color:var(--navy)}
 
-/* ══════════════════════════════════════
-   PROJECTS PAGE
-══════════════════════════════════════ */
+/* PROJECTS */
 .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.proj-card{
-  background:var(--white);border:1.5px solid var(--border2);border-radius:22px;overflow:hidden;
-  box-shadow:0 4px 24px rgba(15,61,140,.08);text-decoration:none;color:inherit;
-  display:flex;flex-direction:column;transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s;
-}
+.proj-card{background:var(--white);border:1.5px solid var(--border2);border-radius:22px;overflow:hidden;box-shadow:0 4px 24px rgba(15,61,140,.08);text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s}
 .proj-card:hover{transform:translateY(-8px);box-shadow:0 24px 64px rgba(15,61,140,.18)}
 .proj-img{width:100%;height:200px;object-fit:cover;display:block;transition:transform .5s ease}
 .proj-card:hover .proj-img{transform:scale(1.04)}
@@ -377,21 +329,14 @@ nav{
 .proj-card:hover .proj-link{gap:10px;color:var(--navy)}
 .proj-year{font-size:11px;color:var(--muted);font-weight:500}
 
-/* ══════════════════════════════════════
-   WHY ME PAGE
-══════════════════════════════════════ */
+/* WHY ME */
 .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
 .why-items{display:flex;flex-direction:column;gap:10px}
-.why-item{
-  background:var(--glass2);border:1.5px solid var(--border2);border-radius:16px;padding:20px 22px;
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;gap:16px;
-  box-shadow:0 2px 12px rgba(15,61,140,.05);transition:transform .25s,box-shadow .25s,border-color .25s;
-}
+.why-item{background:var(--glass2);border:1.5px solid var(--border2);border-radius:16px;padding:20px 22px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;gap:16px;box-shadow:0 2px 12px rgba(15,61,140,.05);transition:transform .25s,box-shadow .25s,border-color .25s}
 .why-item:hover{transform:translateX(5px);box-shadow:var(--shadow);border-color:rgba(29,111,232,.3)}
 .why-n{width:30px;height:30px;border-radius:9px;flex-shrink:0;background:linear-gradient(135deg,var(--blue),var(--navy));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;box-shadow:0 3px 10px rgba(29,111,232,.3)}
 .why-ttl{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}
 .why-dsc{font-size:12px;font-weight:300;color:var(--muted);line-height:1.75}
-
 .tcard{background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(228,239,255,.7));border:1.5px solid var(--border2);border-radius:24px;padding:40px;box-shadow:var(--shadow2);position:relative;overflow:hidden}
 .tcard::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(59,142,245,.18),transparent);pointer-events:none}
 .tq-icon{font-size:52px;color:var(--blue);opacity:.2;line-height:1;margin-bottom:12px}
@@ -400,47 +345,27 @@ nav{
 .tcard-stars{display:flex;gap:3px;margin-bottom:16px}
 .star{color:var(--blue2);font-size:16px}
 
-/* ══════════════════════════════════════
-   CONTACT PAGE
-══════════════════════════════════════ */
-.contact-wrap{
-  background:var(--glass2);border:1.5px solid var(--border2);border-radius:28px;
-  backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);
-  padding:64px;display:grid;grid-template-columns:1fr 1fr;gap:64px;
-  align-items:start;box-shadow:var(--shadow2);position:relative;overflow:hidden;
-}
+/* CONTACT */
+.contact-wrap{background:var(--glass2);border:1.5px solid var(--border2);border-radius:28px;backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);padding:64px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;box-shadow:var(--shadow2);position:relative;overflow:hidden}
 .contact-wrap::before{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(59,142,245,.12),transparent);pointer-events:none}
 .ctitle{font-size:clamp(28px,3vw,44px);font-weight:800;line-height:1.1;letter-spacing:-.03em;margin-bottom:14px;color:var(--ink)}
 .csub{font-size:14px;font-weight:300;color:var(--muted);line-height:1.85;margin-bottom:36px}
 .csub strong{color:var(--ink2);font-weight:600}
 .clinks{display:flex;flex-direction:column;gap:9px}
-.clink{
-  display:flex;justify-content:space-between;align-items:center;
-  background:var(--bg);border:1.5px solid var(--border2);border-radius:14px;padding:16px 18px;
-  text-decoration:none;color:inherit;box-shadow:0 2px 10px rgba(15,61,140,.05);
-  transition:transform .22s,border-color .22s,box-shadow .22s;
-}
+.clink{display:flex;justify-content:space-between;align-items:center;background:var(--bg);border:1.5px solid var(--border2);border-radius:14px;padding:16px 18px;text-decoration:none;color:inherit;box-shadow:0 2px 10px rgba(15,61,140,.05);transition:transform .22s,border-color .22s,box-shadow .22s}
 .clink:hover{transform:translateX(4px);border-color:rgba(29,111,232,.35);box-shadow:var(--shadow)}
 .clink-lbl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
 .clink-val{font-size:13px;font-weight:600;color:var(--ink)}
 .clink-arr{font-size:18px;color:var(--blue);transition:transform .22s}
 .clink:hover .clink-arr{transform:translate(3px,-3px)}
 
-/* ══════════════════════════════════════
-   FOOTER
-══════════════════════════════════════ */
-footer{
-  padding:22px 60px;border-top:1px solid var(--border2);
-  display:flex;justify-content:space-between;align-items:center;
-  background:rgba(240,246,255,.9);position:relative;z-index:1;
-}
+/* FOOTER */
+footer{padding:22px 60px;border-top:1px solid var(--border2);display:flex;justify-content:space-between;align-items:center;background:rgba(240,246,255,.9);position:relative;z-index:1}
 .fcopy{font-size:11px;color:var(--muted);letter-spacing:.05em}
 .favail{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted)}
 .fdot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px rgba(34,197,94,.5);animation:livep 2s ease infinite}
 
-/* ══════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════ */
+/* RESPONSIVE */
 @media(max-width:900px){
   nav{padding:14px 20px}
   .nav-pills{display:none}
@@ -449,7 +374,7 @@ footer{
   .mobile-menu{display:flex}
   #page-home{padding:90px 20px 50px}
   .hero-grid{grid-template-columns:1fr}
-  .page-content{padding:40px 20px 60px}
+  .page-content{padding:36px 20px 60px}
   .about-grid,.why-grid{grid-template-columns:1fr;gap:40px}
   .srv-grid,.proj-grid{grid-template-columns:1fr}
   .contact-wrap{grid-template-columns:1fr;gap:40px;padding:32px 20px}
@@ -459,43 +384,40 @@ footer{
 </head>
 <body>
 
+<!-- ══ TRANSITION ELEMENTS ══ -->
+<div id="progress-bar"></div>
+<div id="page-toast"></div>
+
 <!-- ══ NAV ══ -->
 <nav>
-  <a href="#" class="logo" onclick="showPage('home');return false">
+  <a class="logo" onclick="showPage('home')">
     <div class="logo-badge">EA</div>
     Elijah Agbottah
   </a>
-
   <div class="nav-pills" id="navPills">
-    <a data-page="home"     onclick="showPage('home')">    <span class="nav-icon">🏠</span> Home</a>
-    <a data-page="about"    onclick="showPage('about')">   <span class="nav-icon">👤</span> About</a>
-    <a data-page="services" onclick="showPage('services')"><span class="nav-icon">⚙️</span> Services</a>
-    <a data-page="projects" onclick="showPage('projects')"><span class="nav-icon">💼</span> Projects</a>
-    <a data-page="why"      onclick="showPage('why')">     <span class="nav-icon">⭐</span> Why Me</a>
-    <a data-page="contact"  onclick="showPage('contact')"> <span class="nav-icon">✉️</span> Contact</a>
+    <a data-page="home"     onclick="showPage('home')">    <span class="nav-icon">🏠</span>Home</a>
+    <a data-page="about"    onclick="showPage('about')">   <span class="nav-icon">👤</span>About</a>
+    <a data-page="services" onclick="showPage('services')"><span class="nav-icon">⚙️</span>Services</a>
+    <a data-page="projects" onclick="showPage('projects')"><span class="nav-icon">💼</span>Projects</a>
+    <a data-page="why"      onclick="showPage('why')">     <span class="nav-icon">⭐</span>Why Me</a>
+    <a data-page="contact"  onclick="showPage('contact')"> <span class="nav-icon">✉️</span>Contact</a>
   </div>
-
   <a href="mailto:agbottahelijah@gmail.com" class="nav-cta">Hire Me</a>
-
-  <div class="hamburger" id="hamburger">
-    <span></span><span></span><span></span>
-  </div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
 </nav>
 
 <!-- ══ MOBILE DRAWER ══ -->
 <div class="mobile-menu" id="mobileMenu">
-  <a data-page="home"     onclick="showPage('home');closeMobile()">    <span class="m-icon">🏠</span> Home</a>
-  <a data-page="about"    onclick="showPage('about');closeMobile()">   <span class="m-icon">👤</span> About</a>
-  <a data-page="services" onclick="showPage('services');closeMobile()"><span class="m-icon">⚙️</span> Services</a>
-  <a data-page="projects" onclick="showPage('projects');closeMobile()"><span class="m-icon">💼</span> Projects</a>
-  <a data-page="why"      onclick="showPage('why');closeMobile()">     <span class="m-icon">⭐</span> Why Me</a>
+  <a data-page="home"     onclick="showPage('home');closeMobile()">    <span class="m-icon">🏠</span>Home</a>
+  <a data-page="about"    onclick="showPage('about');closeMobile()">   <span class="m-icon">👤</span>About</a>
+  <a data-page="services" onclick="showPage('services');closeMobile()"><span class="m-icon">⚙️</span>Services</a>
+  <a data-page="projects" onclick="showPage('projects');closeMobile()"><span class="m-icon">💼</span>Projects</a>
+  <a data-page="why"      onclick="showPage('why');closeMobile()">     <span class="m-icon">⭐</span>Why Me</a>
   <div class="m-divider"></div>
   <a data-page="contact"  onclick="showPage('contact');closeMobile()" class="m-cta">✉️ &nbsp;Contact Me</a>
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGES
-══════════════════════════════════════ -->
+<!-- ══ PAGES ══ -->
 
 <!-- HOME -->
 <div id="page-home" class="page active">
@@ -509,7 +431,7 @@ footer{
       </h1>
       <p class="hero-sub">Hi, I'm <strong>Elijah Agbottah</strong> — an IT & Systems student who builds fast, beautiful, and functional websites and software that help people and businesses succeed online.</p>
       <div class="hero-actions">
-        <a class="btn-fill" onclick="showPage('projects')">View my work →</a>
+        <a class="btn-fill"    onclick="showPage('projects')">View my work →</a>
         <a class="btn-outline" onclick="showPage('contact')">Let's talk</a>
       </div>
     </div>
@@ -536,20 +458,14 @@ footer{
 <!-- ABOUT -->
 <div id="page-about" class="page">
   <div class="page-content">
-    <div class="page-header">
-      <p class="stag">About Me</p>
-      <h2 class="stitle">The person behind<br>the <em>code.</em></h2>
-    </div>
+    <div class="page-header"><p class="stag">About Me</p><h2 class="stitle">The person behind<br>the <em>code.</em></h2></div>
     <div class="about-grid">
       <div class="about-left">
         <div class="photo-wrap">
           <img class="elijah" src="images/Elijah.png" alt="Elijah Agbottah"/>
           <div class="photo-tag">
             <div class="photo-tag-dot"></div>
-            <div>
-              <div class="photo-tag-name">Elijah Agbottah</div>
-              <div class="photo-tag-role">Web & Software Developer</div>
-            </div>
+            <div><div class="photo-tag-name">Elijah Agbottah</div><div class="photo-tag-role">Web & Software Developer</div></div>
             <div class="photo-tag-divider"></div>
             <div style="font-size:18px">👨‍💻</div>
           </div>
@@ -572,10 +488,7 @@ footer{
 <!-- SERVICES -->
 <div id="page-services" class="page">
   <div class="page-content">
-    <div class="page-header">
-      <p class="stag">Services</p>
-      <h2 class="stitle">What I can<br>do for <em>you.</em></h2>
-    </div>
+    <div class="page-header"><p class="stag">Services</p><h2 class="stitle">What I can<br>do for <em>you.</em></h2></div>
     <div class="srv-grid">
       <div class="srv"><div class="srv-ico">🌐</div><div class="srv-name">Website Design & Development</div><p class="srv-desc">Beautiful, fast, fully responsive websites tailored to your business or personal brand — from landing pages to full multi-page sites.</p><div class="srv-chips"><span class="srv-chip">HTML/CSS</span><span class="srv-chip">React</span><span class="srv-chip">Responsive</span></div></div>
       <div class="srv"><div class="srv-ico">⚙️</div><div class="srv-name">Web Application Development</div><p class="srv-desc">Custom web apps with real functionality — user accounts, dashboards, databases, and APIs — built to solve real problems.</p><div class="srv-chips"><span class="srv-chip">Node.js</span><span class="srv-chip">Python</span><span class="srv-chip">Databases</span></div></div>
@@ -590,40 +503,22 @@ footer{
 <!-- PROJECTS -->
 <div id="page-projects" class="page">
   <div class="page-content">
-    <div class="page-header">
-      <p class="stag">Portfolio</p>
-      <h2 class="stitle">Things I've<br><em>built.</em></h2>
-    </div>
+    <div class="page-header"><p class="stag">Portfolio</p><h2 class="stitle">Things I've<br><em>built.</em></h2></div>
     <div class="proj-grid">
       <a class="proj-card" href="#">
         <div class="proj-img-wrap"><img class="proj-img" src="images/page.jpg" alt="Business Landing Page" loading="lazy"/></div>
-        <div class="proj-body">
-          <div class="proj-tag">Website</div>
-          <div class="proj-name">Business Landing Page</div>
-          <p class="proj-desc">A modern, conversion-focused website for a local business — fully responsive with contact forms and Google Maps integration.</p>
-         
-        </div>
-      
+        <div class="proj-body"><div class="proj-tag">Website</div><div class="proj-name">Business Landing Page</div><p class="proj-desc">A modern, conversion-focused website for a local business — fully responsive with contact forms and Google Maps integration.</p><div class="proj-stack"><span class="proj-chip">HTML/CSS</span><span class="proj-chip">JavaScript</span></div></div>
+        <div class="proj-footer"><span class="proj-link">View project →</span><span class="proj-year">2024</span></div>
       </a>
       <a class="proj-card" href="#">
         <div class="proj-img-wrap"><img class="proj-img" src="images/student portal.jpg" alt="Student Portal System" loading="lazy"/></div>
-        <div class="proj-body">
-          <div class="proj-tag">Web App</div>
-          <div class="proj-name">Student Portal System</div>
-          <p class="proj-desc">A web application for managing student records, grades, and schedules — built as part of my IT & Systems coursework.</p>
-         
-        </div>
-        
+        <div class="proj-body"><div class="proj-tag">Web App</div><div class="proj-name">Student Portal System</div><p class="proj-desc">A web application for managing student records, grades, and schedules — built as part of my IT & Systems coursework.</p><div class="proj-stack"><span class="proj-chip">PHP</span><span class="proj-chip">MySQL</span></div></div>
+        <div class="proj-footer"><span class="proj-link">View project →</span><span class="proj-year">2024</span></div>
       </a>
       <a class="proj-card" href="#">
         <div class="proj-img-wrap"><img class="proj-img" src="images/ecommerce.jpg" alt="E-Commerce Store" loading="lazy"/></div>
-        <div class="proj-body">
-          <div class="proj-tag">E-Commerce</div>
-          <div class="proj-name">Online Store</div>
-          <p class="proj-desc">A fully functional online store with product listings, a shopping cart, and a mobile-optimised checkout flow.</p>
-          
-        </div>
-      
+        <div class="proj-body"><div class="proj-tag">E-Commerce</div><div class="proj-name">Online Store</div><p class="proj-desc">A fully functional online store with product listings, a shopping cart, and a mobile-optimised checkout flow.</p><div class="proj-stack"><span class="proj-chip">React</span><span class="proj-chip">Node.js</span></div></div>
+        <div class="proj-footer"><span class="proj-link">View project →</span><span class="proj-year">2025</span></div>
       </a>
     </div>
   </div>
@@ -632,10 +527,7 @@ footer{
 <!-- WHY ME -->
 <div id="page-why" class="page">
   <div class="page-content">
-    <div class="page-header">
-      <p class="stag">Why Me</p>
-      <h2 class="stitle">Why work<br>with <em>me?</em></h2>
-    </div>
+    <div class="page-header"><p class="stag">Why Me</p><h2 class="stitle">Why work<br>with <em>me?</em></h2></div>
     <div class="why-grid">
       <div class="why-items">
         <div class="why-item"><div class="why-n">01</div><div><div class="why-ttl">Clean, readable code</div><div class="why-dsc">I write code that works today and is easy to maintain tomorrow. No shortcuts, no spaghetti.</div></div></div>
@@ -657,10 +549,7 @@ footer{
 <!-- CONTACT -->
 <div id="page-contact" class="page">
   <div class="page-content">
-    <div class="page-header">
-      <p class="stag">Contact</p>
-      <h2 class="stitle">Let's build<br>something <em>great.</em></h2>
-    </div>
+    <div class="page-header"><p class="stag">Contact</p><h2 class="stitle">Let's build<br>something <em>great.</em></h2></div>
     <div class="contact-wrap">
       <div>
         <div class="ctitle">Have a project in mind?</div>
@@ -669,8 +558,8 @@ footer{
       </div>
       <div class="clinks">
         <a href="mailto:agbottahelijah@gmail.com" class="clink"><div><div class="clink-lbl">Email</div><div class="clink-val">agbottahelijah@gmail.com</div></div><span class="clink-arr">↗</span></a>
-        <a href="https://twitter.com/agbottahelijah@gmail.com" class="clink" target="_blank" rel="noopener"><div><div class="clink-lbl">Twitter / X</div><div class="clink-val">twitter.com/agbottahelijah@gmail.com</div></div><span class="clink-arr">↗</span></a>
-        <a href="https://linkedin.com/in/agbottahelijah@gmail.com" class="clink" target="_blank" rel="noopener"><div><div class="clink-lbl">LinkedIn</div><div class="clink-val">linkedin.com/in/agbottahelijah@gmail.com</div></div><span class="clink-arr">↗</span></a>
+        <a href="https://twitter.com/agbottahelijah" class="clink" target="_blank" rel="noopener"><div><div class="clink-lbl">Twitter / X</div><div class="clink-val">twitter.com/agbottahelijah</div></div><span class="clink-arr">↗</span></a>
+        <a href="https://linkedin.com/in/agbottahelijah" class="clink" target="_blank" rel="noopener"><div><div class="clink-lbl">LinkedIn</div><div class="clink-val">linkedin.com/in/agbottahelijah</div></div><span class="clink-arr">↗</span></a>
         <a href="https://wa.me/233595636581" class="clink" target="_blank" rel="noopener"><div><div class="clink-lbl">WhatsApp</div><div class="clink-val">Chat with me</div></div><span class="clink-arr">↗</span></a>
       </div>
     </div>
@@ -679,52 +568,106 @@ footer{
 
 <!-- FOOTER -->
 <footer>
-  <span class="fcopy">© 2026 Elijah Agbottah Ghana GH — All rights reserved</span>
+  <span class="fcopy">© 2026 Elijah Agbottah — All rights reserved</span>
   <div class="favail"><div class="fdot"></div>Open to hire</div>
 </footer>
 
 <script>
-// ── PAGE SWITCHER ──
+// Page labels and icons for the toast
+const pageInfo = {
+  home:     { label: 'Home',     icon: '🏠' },
+  about:    { label: 'About Me', icon: '👤' },
+  services: { label: 'Services', icon: '⚙️' },
+  projects: { label: 'Projects', icon: '💼' },
+  why:      { label: 'Why Me',   icon: '⭐' },
+  contact:  { label: 'Contact',  icon: '✉️' },
+};
+
+// Track current page order for slide direction
+const pageOrder = ['home','about','services','projects','why','contact'];
+let currentPage = 'home';
+
 function showPage(name) {
-  // hide all pages
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  // show target page
-  const target = document.getElementById('page-' + name);
-  if (target) {
-    target.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'instant' }); // jump to top instantly
+  if (name === currentPage) return; // don't re-animate same page
+
+  const fromIndex = pageOrder.indexOf(currentPage);
+  const toIndex   = pageOrder.indexOf(name);
+  const goingRight = toIndex > fromIndex;
+
+  // 1. PROGRESS BAR — sweep across top
+  const bar = document.getElementById('progress-bar');
+  bar.style.width = '0%';
+  bar.className = '';
+  void bar.offsetWidth; // force reflow
+  bar.classList.add('running');
+  setTimeout(() => {
+    bar.classList.remove('running');
+    bar.classList.add('done');
+    setTimeout(() => { bar.className=''; bar.style.width='0%'; }, 400);
+  }, 380);
+
+  // 2. RIPPLE on the clicked nav link
+  const clickedLink = document.querySelector(`[data-page="${name}"]`);
+  if (clickedLink) {
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    const rect = clickedLink.getBoundingClientRect();
+    ripple.style.left = (rect.width / 2) + 'px';
+    ripple.style.top  = (rect.height / 2) + 'px';
+    clickedLink.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
   }
-  // update active nav link — desktop
+
+  // 3. TOAST — page name pops up in center
+  const toast = document.getElementById('page-toast');
+  const info = pageInfo[name] || { label: name, icon: '📄' };
+  toast.innerHTML = `<span style="font-size:20px">${info.icon}</span> ${info.label}`;
+  toast.className = '';
+  void toast.offsetWidth;
+  toast.classList.add('show');
+  setTimeout(() => toast.className = '', 700);
+
+  // 4. SWITCH PAGE with slide direction
+  const oldPage = document.getElementById('page-' + currentPage);
+  const newPage = document.getElementById('page-' + name);
+
+  oldPage.classList.remove('active');
+  newPage.classList.remove('anim-right','anim-left');
+  newPage.classList.add('active');
+  void newPage.offsetWidth;
+  newPage.classList.add(goingRight ? 'anim-right' : 'anim-left');
+
+  // 5. UPDATE ACTIVE NAV LINKS
   document.querySelectorAll('[data-page]').forEach(a => {
     a.classList.toggle('active', a.dataset.page === name);
   });
+
+  currentPage = name;
+  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
-// ── HAMBURGER TOGGLE ──
+// HAMBURGER
 const hamburger  = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
-
 hamburger.addEventListener('click', () => {
   const isOpen = mobileMenu.classList.toggle('open');
   hamburger.classList.toggle('open', isOpen);
 });
-
 document.addEventListener('click', e => {
   if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
     hamburger.classList.remove('open');
     mobileMenu.classList.remove('open');
   }
 });
-
 function closeMobile() {
   hamburger.classList.remove('open');
   mobileMenu.classList.remove('open');
 }
 
-// ── SET HOME ACTIVE ON LOAD ──
+// SET HOME ACTIVE ON LOAD
 document.querySelector('[data-page="home"]').classList.add('active');
 
-// ── MAGNETIC BUTTONS ──
+// MAGNETIC BUTTONS
 document.querySelectorAll('.btn-fill,.btn-outline,.nav-cta').forEach(btn => {
   btn.addEventListener('mousemove', e => {
     const r = btn.getBoundingClientRect();
